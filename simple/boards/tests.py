@@ -7,14 +7,22 @@ from .views import home, board_topics
 
 
 class HomeTests(TestCase):
-    def test_home_view_status_code(self):
+    def setUp(self):
+        self.board = Board.objects.create(name='Django', description='Django board. ')
         url = reverse('home')
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.response = self.client.get(url)
+
+    def test_home_view_status_code(self):
+        self.assertEquals(self.response.status_code, 200)
 
     def test_home_url_resolves_home_view(self):
         view = resolve('/')
         self.assertEquals(view.func, home)
+
+    def test_home_view_contains_links_to_topics_page(self):
+        print(self.response)
+        board_topic_url = reverse('board_topics', kwargs={'pk': self.board.pk})
+        self.assertContains(self.response, 'href="{0}"'.format(board_topic_url))
 
 
 class BoardTopicTests(TestCase):
