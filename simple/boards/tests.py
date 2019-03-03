@@ -8,7 +8,8 @@ from .views import home, board_topics
 
 class HomeTests(TestCase):
     def setUp(self):
-        self.board = Board.objects.create(name='Django', description='Django board. ')
+        self.board = Board.objects.create(
+            name='Django', description='Django board. ')
         url = reverse('home')
         self.response = self.client.get(url)
 
@@ -20,9 +21,9 @@ class HomeTests(TestCase):
         self.assertEquals(view.func, home)
 
     def test_home_view_contains_links_to_topics_page(self):
-        print(self.response)
         board_topic_url = reverse('board_topics', kwargs={'pk': self.board.pk})
-        self.assertContains(self.response, 'href="{0}"'.format(board_topic_url))
+        self.assertContains(self.response,
+                            'href="{0}"'.format(board_topic_url))
 
 
 class BoardTopicTests(TestCase):
