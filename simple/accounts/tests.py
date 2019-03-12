@@ -25,6 +25,7 @@ class SignUpTests(TestCase):
         form = self.response.context.get('form')
         self.assertIsInstance(form, UserCreationForm)
 
+
 class SuccessfulSignUpTests(TestCase):
     def setUp(self):
         url = reverse('signup')
